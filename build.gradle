@@ -1,0 +1,76 @@
+description 'ドメイン駆動設計によるアプリケーション開発のテンプレート'
+
+buildscript {
+    ext {
+        springBootVersion = '1.3.3.RELEASE'
+        encoding = 'UTF-8'
+        compatibility = 1.8
+    }
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+sourceCompatibility = compatibility
+targetCompatibility = compatibility
+
+tasks.withType(AbstractCompile) each { it.options.encoding = encoding }
+tasks.withType(GroovyCompile) each { it.groovyOptions.encoding = encoding }
+
+test {
+    if (project.hasProperty('sysprops')) {
+        project.sysprops.split('\\s+').each {
+            systemProperty it.split('=')[0], it.split('=')[1]
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    baseName = 'isolating-the-domain'
+    version = '0.1.0'
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}")
+
+    //<![if lt IE9]--><![endif]-->などのHTML条件付きコメント内部でthymeleafのexpressionを有効にする。
+    compile('org.thymeleaf.extras:thymeleaf-extras-conditionalcomments:2.1.1.RELEASE')
+
+
+    runtime("org.webjars:bootstrap:3.3.4")
+    runtime("org.webjars:font-awesome:4.3.0-1")
+    runtime("org.webjars:html5shiv:3.7.2")
+    runtime("org.webjars:respond:1.4.2")
+
+    compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1")
+    compile("org.mybatis:mybatis-typehandlers-jsr310:1.0.0")
+    runtime("com.h2database:h2:1.4.187")
+    compile("org.springframework.boot:spring-boot-devtools") // for h2-console
+
+
+    compile("commons-lang:commons-lang:2.6")
+
+    testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+    testCompile("junit:junit:4.12")
+    testCompile("org.spockframework:spock-core:1.0-groovy-2.4")
+    testCompile("org.spockframework:spock-spring:1.0-groovy-2.4")
+
+    compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
+
+}
+
