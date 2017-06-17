@@ -1,4 +1,4 @@
-description 'ドメイン駆動設計によるアプリケーション開発のテンプレート'
+description '模写会支援サービス'
 
 buildscript {
     ext {
@@ -39,7 +39,7 @@ repositories {
 }
 
 jar {
-    baseName = 'isolating-the-domain'
+    baseName = 'mosha'
     version = '0.1.0'
 }
 
